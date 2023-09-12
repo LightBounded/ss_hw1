@@ -121,9 +121,10 @@ void print_stack_trace()
     char operation_name[4];
     get_operation_name(operation_name);
 
-    // Print the executed instruction and the state of the VM
-    fprintf(out_file_ptr, "%3s %2d %2d %2d %2d %2d ", operation_name, l, m, pc, bp, sp);
+    char space[] = "";
 
+    // Print the executed instruction and the state of the VM
+    fprintf(out_file_ptr, "\t%3s\t%d %4d %4d %4d %4d %2s", operation_name, l, m, pc, bp, sp, space);
     // Print the current stack state
     int i = 0;
     for (int j = stack_start_idx; j <= sp; j++)
@@ -184,8 +185,8 @@ int main(int argc, char *argv[])
     sp = bp - 1;
     pc = 0;
 
-    fprintf(out_file_ptr, "                     PC BP SP stack\n");
-    fprintf(out_file_ptr, "Initial values       %2d %2d %2d\n", pc, bp, sp);
+    fprintf(out_file_ptr, "%21s%5s%5s%8s\n", "PC", "BP", "SP", "stack");
+    fprintf(out_file_ptr, "Initial values:%6d%5d%5d\n\n", pc, bp, sp);
 
     int halt = 0;
 
@@ -295,8 +296,10 @@ int main(int argc, char *argv[])
                 break;
             case 2: // SYS 0, 2
                 sp++;
-                printf("Enter an integer: ");
+                printf("Please Enter an Integer: ");
+                fprintf(out_file_ptr, "Please Enter an Integer: ");
                 scanf("%d", &pas[sp]);
+                fprintf(out_file_ptr, "%d\n", pas[sp]);
                 break;
             case 3: // SYS 0, 3
                 halt = 1;
