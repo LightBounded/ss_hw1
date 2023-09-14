@@ -12,7 +12,7 @@ Matthew Labrada
 
 int pas[ARRAY_SIZE] = {0}; // Process Address Space (PAS)
 int lex_level_idx = 0;     // Current lexicographical level
-int lex_levels[3] = {0};   // Lexicographical levels (max 3)
+int lex_levels[3] = {0};   // Lexicographical levels (used for printing the stack trace)
 int stack_start_idx = 0;   // Index of the start of the stack in the PAS
 
 FILE *in_file_ptr;
@@ -172,11 +172,9 @@ int main(int argc, char *argv[])
 
     // Store each instruction in the PAS (fetch cycle)
     int i = 0;
-    while (1)
+    while (feof(in_file_ptr) == 0) // Keep reading until the end of the file is reached
     {
-        // Read in the next instruction
-        if (fscanf(in_file_ptr, "%d %d %d", &op, &l, &m) == EOF)
-            break;
+        fscanf(in_file_ptr, "%d %d %d", &op, &l, &m);
 
         pas[i] = op;
         pas[i + 1] = l;
