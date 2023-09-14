@@ -1,3 +1,10 @@
+/*
+Homework #1 (PM/0-Machine)
+
+Caleb Rivera
+Matthew Labrada
+*/
+
 #include <stdio.h>
 #include <string.h>
 
@@ -124,6 +131,7 @@ void print_stack_trace()
     char space[] = "";
 
     // Print the executed instruction and the state of the VM
+    printf("\t%3s\t%d %4d %4d %4d %4d %2s", operation_name, l, m, pc, bp, sp, space);
     fprintf(out_file_ptr, "\t%3s\t%d %4d %4d %4d %4d %2s", operation_name, l, m, pc, bp, sp, space);
     // Print the current stack state
     int i = 0;
@@ -133,11 +141,14 @@ void print_stack_trace()
         if (i < lex_level_idx && j == lex_levels[i] && j != 0)
         {
             i++;
+            printf("| ");
             fprintf(out_file_ptr, "| ");
         }
+        printf("%d ", pas[j]);
         fprintf(out_file_ptr, "%d ", pas[j]);
     }
 
+    printf("\n");
     fprintf(out_file_ptr, "\n");
 }
 
@@ -185,7 +196,9 @@ int main(int argc, char *argv[])
     sp = bp - 1;
     pc = 0;
 
+    printf("%21s%5s%5s%8s\n", "PC", "BP", "SP", "stack");
     fprintf(out_file_ptr, "%21s%5s%5s%8s\n", "PC", "BP", "SP", "stack");
+    printf("Initial values:%6d%5d%5d\n\n", pc, bp, sp);
     fprintf(out_file_ptr, "Initial values:%6d%5d%5d\n\n", pc, bp, sp);
 
     int halt = 0;
@@ -291,6 +304,7 @@ int main(int argc, char *argv[])
             switch (m)
             {
             case 1: // SYS 0, 1
+                printf("Output result is: %d\n", pas[sp]);
                 fprintf(out_file_ptr, "Output result is: %d\n", pas[sp]);
                 sp--;
                 break;
@@ -299,6 +313,7 @@ int main(int argc, char *argv[])
                 printf("Please Enter an Integer: ");
                 fprintf(out_file_ptr, "Please Enter an Integer: ");
                 scanf("%d", &pas[sp]);
+                printf("%d\n", pas[sp]);
                 fprintf(out_file_ptr, "%d\n", pas[sp]);
                 break;
             case 3: // SYS 0, 3
