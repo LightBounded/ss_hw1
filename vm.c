@@ -306,7 +306,6 @@ int main(int argc, char *argv[])
                 printf("Please Enter an Integer: ");
                 fprintf(out_file_ptr, "Please Enter an Integer: ");
                 scanf("%d", &pas[sp]);
-                printf("%d\n", pas[sp]);
                 fprintf(out_file_ptr, "%d\n", pas[sp]);
                 break;
             case 3: // SYS 0, 3
