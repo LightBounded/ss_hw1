@@ -29,7 +29,7 @@ Instructions:
 			cd Downloads)
 
 		5. Once in that directory, type the following command:
-			scp -r ./ YOUR_NID@eustis3.eecs.ucf.edu:~/
+			scp -r ./* YOUR_NID@eustis3.eecs.ucf.edu:~/
 			(Note: Be sure to replace "YOUR_NID" with your actual UCF NID.)
 		
 	Compiling/Running on Eustis:
