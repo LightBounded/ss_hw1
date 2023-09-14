@@ -1,3 +1,3 @@
-gcc ./src/vm.c 
-./a.out "./src/input.txt"
+gcc ./vm.c 
+./a.out "./input.txt"
 rm ./a.out

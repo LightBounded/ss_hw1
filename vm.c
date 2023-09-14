@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
     }
 
     in_file_ptr = fopen(argv[1], "r");
-    out_file_ptr = fopen("./src/output.txt", "w");
+    out_file_ptr = fopen("./output.txt", "w");
 
     if (in_file_ptr == NULL)
     {
@@ -174,11 +174,9 @@ int main(int argc, char *argv[])
     int i = 0;
     while (1)
     {
-        if (op == 9 && m == 3) // SYS 0, 3 (halt)
-            break;
-
         // Read in the next instruction
-        fscanf(in_file_ptr, "%d %d %d", &op, &l, &m);
+        if (fscanf(in_file_ptr, "%d %d %d", &op, &l, &m) == EOF)
+            break;
 
         pas[i] = op;
         pas[i + 1] = l;
