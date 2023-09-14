@@ -11,8 +11,7 @@ Matthew Labrada
 #define ARRAY_SIZE 512 // Process Address Space (PAS) size
 
 int pas[ARRAY_SIZE] = {0}; // Process Address Space (PAS)
-int lex_level_idx = 0;     // Current lexicographical level
-int lex_levels[3] = {0};   // Lexicographical levels (used for printing the stack trace)
+int lex_level = 0;         // Current lexicographical level
 int stack_start_idx = 0;   // Index of the start of the stack in the PAS
 
 FILE *in_file_ptr;
@@ -25,13 +24,6 @@ int pc; // Program counter
 int op; // Op code
 int l;  // Lexicographical level
 int m;  // Modifier
-
-void print_lex_levels() // Print the lexicographical levels (used for debugging)
-{
-    for (int i = 0; i < 3; i++)
-        printf("%d ", lex_levels[i]);
-    printf("\n");
-}
 
 void print_pas() // Print the entire process address space (used for debugging)
 {
@@ -133,17 +125,23 @@ void print_stack_trace()
     // Print the executed instruction and the state of the VM
     printf("\t%3s\t%d %4d %4d %4d %4d %2s", operation_name, l, m, pc, bp, sp, space);
     fprintf(out_file_ptr, "\t%3s\t%d %4d %4d %4d %4d %2s", operation_name, l, m, pc, bp, sp, space);
+
     // Print the current stack state
     int i = 0;
     for (int j = stack_start_idx; j <= sp; j++)
     {
         // Print a vertical bar to indicate a new activation record
-        if (i < lex_level_idx && j == lex_levels[i] && j != 0)
+        int base_arb = base(bp, lex_level - i);
+        if (base_arb == j)
         {
+            if (base_arb != stack_start_idx)
+            {
+                printf("| ");
+                fprintf(out_file_ptr, "| ");
+            }
             i++;
-            printf("| ");
-            fprintf(out_file_ptr, "| ");
         }
+
         printf("%d ", pas[j]);
         fprintf(out_file_ptr, "%d ", pas[j]);
     }
@@ -222,7 +220,7 @@ int main(int argc, char *argv[])
             switch (m)
             {
             case 0: // RTN
-                lex_level_idx = lex_level_idx - 1;
+                lex_level = lex_level - 1;
                 sp = bp - 1;
                 bp = pas[sp + 2];
                 pc = pas[sp + 3];
@@ -283,7 +281,6 @@ int main(int argc, char *argv[])
             pas[sp + 3] = pc;
             bp = sp + 1;
             pc = m;
-            lex_levels[lex_level_idx++] = bp;
             break;
         case 6: // INC 0, M
             sp += m;
