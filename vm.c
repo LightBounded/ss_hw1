@@ -281,6 +281,7 @@ int main(int argc, char *argv[])
             pas[sp + 3] = pc;
             bp = sp + 1;
             pc = m;
+            lex_level++;
             break;
         case 6: // INC 0, M
             sp += m;
